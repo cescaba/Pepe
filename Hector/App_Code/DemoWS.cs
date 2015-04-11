@@ -99,6 +99,65 @@ public class DemoWS : System.Web.Services.WebService {
        
     }
 
+    [WebMethod]
+    public List<Distrito> mostrarDistrito(int id_provincia, int id_departamento, int id_pais)
+    {
+        Distrito d = null;
+        List<Distrito> lista_distri = new List<Distrito>();
+        clsDatosSQL oDatos = new clsDatosSQL();
+        oListaParametros = new List<SqlParameter>();
+
+        oListaParametros.Add(oDatos.RetornarParametro("pai", id_pais));
+        oListaParametros.Add(oDatos.RetornarParametro("dep", id_departamento));
+        oListaParametros.Add(oDatos.RetornarParametro("prov", id_provincia));
+        //Si se necesitan traer datos consultados
+        oDataTable = oDatos.TraerDataTable("sp_distrito", oListaParametros);
+        foreach (DataRow oData in oDataTable.Rows)
+        {
+            d = new Distrito();
+            d.Id_prov = id_provincia;
+            d.Id_dep = id_departamento;
+            d.Id_pai = id_pais;
+            d.Id_dis = int.Parse(oData["id_dis"].ToString());
+            d.Nom_dis = oData["nom_dis"].ToString();
+            lista_distri.Add(d);
+        }
+
+        return lista_distri;
+    }
+
+    public class Distrito
+    {
+        private string nom_dis = "";
+        public string Nom_dis
+        {get { return nom_dis; }
+         set { nom_dis = value; }}
+
+        private int id_dis;
+        public int Id_dis
+        {get { return id_dis; }
+         set { id_dis = value; }}
+
+        private int id_prov;
+        public int Id_prov
+        {
+            get { return id_prov; }
+            set { id_prov = value; }
+        }
+
+        private int id_dep;
+        public int Id_dep
+        {
+            get { return id_dep; }
+            set { id_dep = value; }
+        }
+
+        private int id_pai;
+        public int Id_pai
+        {get { return id_pai; }
+         set { id_pai = value; }}
+    }
+
     //public Category GetCategoryById(Category C);
     [WebMethod]
     public Matematica ejercicios(int num1, int num2)
