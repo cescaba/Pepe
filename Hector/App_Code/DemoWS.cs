@@ -115,12 +115,13 @@ public class DemoWS : System.Web.Services.WebService {
         foreach (DataRow oData in oDataTable.Rows)
         {
             d = new Distrito();
+            d.Nom_dis = oData["nom_dis"].ToString();
+            d.Id_dis = int.Parse(oData["id_dis"].ToString());
             d.Id_prov = id_provincia;
             d.Id_dep = id_departamento;
             d.Id_pai = id_pais;
-            d.Id_dis = int.Parse(oData["id_dis"].ToString());
-            d.Nom_dis = oData["nom_dis"].ToString();
             lista_distri.Add(d);
+
         }
 
         return lista_distri;
