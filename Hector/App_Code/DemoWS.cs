@@ -127,6 +127,65 @@ public class DemoWS : System.Web.Services.WebService {
         return lista_distri;
     }
 
+    [WebMethod]
+    public List<Empresa> mostrarEmpresa(int id_distrito, int id_provincia, int id_departamento, int id_pais)
+    {
+        Empresa d = null;
+        List<Empresa> lista_empresa = new List<Empresa>();
+        clsDatosSQL oDatos = new clsDatosSQL();
+        oListaParametros = new List<SqlParameter>();
+
+        oListaParametros.Add(oDatos.RetornarParametro("dis", id_distrito));
+        oListaParametros.Add(oDatos.RetornarParametro("pai", id_pais));
+        oListaParametros.Add(oDatos.RetornarParametro("dep", id_departamento));
+        oListaParametros.Add(oDatos.RetornarParametro("pro", id_provincia));
+        //Si se necesitan traer datos consultados
+        oDataTable = oDatos.TraerDataTable("sp_empresa", oListaParametros);
+        foreach (DataRow oData in oDataTable.Rows)
+        {
+            d = new Empresa();
+            d.Id_emp = int.Parse(oData["id_emp"].ToString());
+            d.Nom_emp = oData["nom_emp"].ToString();
+            d.Dir_emp = oData["dir_emp"].ToString();
+            d.Img_emp = oData["img_emp"].ToString();
+            lista_empresa.Add(d);
+
+        }
+
+        return lista_empresa;
+    }
+
+    public class Empresa
+    {
+        private string nom_emp = "";
+        public string Nom_emp
+        {
+            get { return nom_emp; }
+            set { nom_emp = value; }
+        }
+
+        private int id_emp;
+        public int Id_emp
+        {
+            get { return id_emp; }
+            set { id_emp = value; }
+        }
+
+        private string dir_emp = "";
+        public string Dir_emp
+        {
+            get { return dir_emp; }
+            set { dir_emp = value; }
+        }
+
+        private string img_emp = "";
+        public string Img_emp
+        {
+            get { return img_emp; }
+            set { img_emp = value; }
+        }
+    }
+
     public class Distrito
     {
         private string nom_dis = "";
