@@ -218,6 +218,145 @@ public class DemoWS : System.Web.Services.WebService {
          set { id_pai = value; }}
     }
 
+    [WebMethod]
+    public List<Balon> mostrarBalon(int id_emp, int id_dis)
+    {
+        Balon d = null;
+        List<Balon> lista_balon = new List<Balon>();
+        clsDatosSQL oDatos = new clsDatosSQL();
+        oListaParametros = new List<SqlParameter>();
+
+        oListaParametros.Add(oDatos.RetornarParametro("id_dis", id_dis));
+        oListaParametros.Add(oDatos.RetornarParametro("id_emp", id_emp));
+
+        //Si se necesitan traer datos consultados
+        oDataTable = oDatos.TraerDataTable("sp_balon", oListaParametros);
+        foreach (DataRow oData in oDataTable.Rows)
+        {
+            d = new Balon();
+            d.Id_emp = int.Parse(oData["id_emp"].ToString());
+            d.Id_dist = int.Parse(oData["id_dist"].ToString());
+            d.Id_bal = int.Parse(oData["id_bal"].ToString());
+            d.Nom_bal = oData["nom_bal"].ToString();
+            d.Pre_bal = double.Parse(oData["pre_bal"].ToString());
+
+            lista_balon.Add(d);
+
+        }
+
+        return lista_balon;
+    }
+
+    public class Balon
+    {
+        private int id_bal = 0;
+        public int Id_bal
+        {
+            get { return id_bal; }
+            set { id_bal = value; }
+        }
+
+        private int id_emp;
+        public int Id_emp
+        {
+            get { return id_emp; }
+            set { id_emp = value; }
+        }
+
+        private int id_dist;
+        public int Id_dist
+        {
+            get { return id_dist; }
+            set { id_dist = value; }
+        }
+
+        private string nom_bal = "";
+        public string Nom_bal
+        {
+            get { return nom_bal; }
+            set { nom_bal = value; }
+        }
+
+        private double pre_bal = 0;
+        public double Pre_bal
+        {
+            get { return pre_bal; }
+            set { pre_bal = value; }
+        }
+
+        private string des_bal = "";
+        public string Des_bal
+        {
+            get { return des_bal; }
+            set { des_bal = value; }
+        }
+    }
+
+    [WebMethod]
+    public int grabarDireccion(string detal_dist, int num_dist, string apa_dist , int id_dis, int id_prov, int id_dep, int id_pai, string ref_dist )
+    {
+        int direc = 0;
+        List<Balon> lista_balon = new List<Balon>();
+        clsDatosSQL oDatos = new clsDatosSQL();
+        oListaParametros = new List<SqlParameter>();
+
+        oListaParametros.Add(oDatos.RetornarParametro("detal_dist", detal_dist));
+        oListaParametros.Add(oDatos.RetornarParametro("num_dist", num_dist));
+        oListaParametros.Add(oDatos.RetornarParametro("apa_dist", apa_dist));
+        oListaParametros.Add(oDatos.RetornarParametro("id_dis", id_dis));
+        oListaParametros.Add(oDatos.RetornarParametro("id_prov", id_prov));
+        oListaParametros.Add(oDatos.RetornarParametro("id_dep", id_dep));
+        oListaParametros.Add(oDatos.RetornarParametro("id_pai", id_pai));
+        oListaParametros.Add(oDatos.RetornarParametro("ref_dist", ref_dist));
+
+        //Si se necesitan traer datos consultados
+        oDatos.ejecutaNonQuery("sp_grabar_dir", oListaParametros);
+        
+        /*foreach (DataRow oData in oDataTable.Rows)
+        {
+            d = new Balon();
+            d.Id_emp = int.Parse(oData["id_emp"].ToString());
+            d.Id_dist = int.Parse(oData["id_dist"].ToString());
+            d.Id_bal = int.Parse(oData["id_bal"].ToString());
+            d.Nom_bal = oData["nom_bal"].ToString();
+            d.Pre_bal = double.Parse(oData["pre_bal"].ToString());
+
+            lista_balon.Add(d);
+
+        }*/
+
+        return direc;
+    }
+
+    /*public class Pantalla_final
+    {
+        
+        private int id_ped = 0;
+        public int Id_ped
+        {
+            get { return id_ped; }
+            set { id_ped = value; }
+        }
+
+        private string telf;
+        public string Telf
+        {
+            get { return telf; }
+            set { telf = value; }
+        }
+
+        private string tiem;
+        public string Tiem
+        {
+            get { return tiem; }
+            set { tiem = value; }
+        }
+
+    }
+   
+ }*/
+
+
     //public Category GetCategoryById(Category C);
     [WebMethod]
     public Matematica ejercicios(int num1, int num2)
