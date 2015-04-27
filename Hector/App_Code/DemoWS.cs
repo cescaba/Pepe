@@ -293,9 +293,8 @@ public class DemoWS : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public int grabarDireccion(string detal_dist, int num_dist, string apa_dist , int id_dis, int id_prov, int id_dep, int id_pai, string ref_dist )
+    public void grabarDireccion(string detal_dist, int num_dist, string apa_dist , int id_dis, int id_prov, int id_dep, int id_pai, string ref_dist )
     {
-        int direc = 0;
         List<Balon> lista_balon = new List<Balon>();
         clsDatosSQL oDatos = new clsDatosSQL();
         oListaParametros = new List<SqlParameter>();
@@ -325,7 +324,6 @@ public class DemoWS : System.Web.Services.WebService {
 
         }*/
 
-        return direc;
     }
 
     /*public class Pantalla_final
